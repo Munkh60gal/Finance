@@ -33,23 +33,25 @@ var uiController = (function(){
 // Sanhuutei ajillah controller *****************************************
 var financeController = (function(){
 
-    // Orlogiin baiguulagch funkts object
+    // Orlogiin baiguulagch funkts object(private buyu dald funkts)
     var Income = function(id, description, value){
         this.id = id;
         this.description = description;
         this.value = value;
     };
     
-    // Zarlagiin baiguulagch funkts object
+    // Zarlagiin baiguulagch funkts object(private buyu dald funkts)
     var Expense = function(id, description, value){
         this.id = id;
         this.description = description;
         this.value = value;
     };
 
+
+    // Private buyu dald data
     var data = {
         // Orlogo, zarlaga hadgalah
-        allItems : {
+        items : {
             inc : [],
             exp : []
         },
@@ -59,7 +61,33 @@ var financeController = (function(){
             inc: 0,
             exp: 0
         }
-    }
+    };
+
+
+    return{
+        addItem: function(type, desc, val){
+
+            var item, id;
+
+            if(data.items[type].length === 0 ) id = 1;
+            else{
+                id = data.items[type][data.items[type].length - 1].id + 1;
+            }
+            
+
+            
+            if(type === "inc"){
+                item = new Income(id, desc, val)
+            }
+
+            else{
+                //type === exp
+                item = new Expense(id, desc, val)
+            }
+
+            data.items[type].push(item);
+        }
+    };
        
 })();
 
@@ -75,11 +103,17 @@ var appController = (function(uiController, financeController)
     var ctrlAddItem = function()
     {
         // 1. Oruulah ugugdliig delgetsees olj avna.
-        console.log(uiController.getInput());
+        var input = uiController.getInput();
 
         // 2. Olj avsan ugugdluudee sanhuugiin controllert damjuulj tend hadgalna. 
+        financeController.addItem(input.type, input.description, input.value);
+
         // 3. Olj avsan ugugdluudiig web deeree tohiroh hesegt n gargana.
+
+
         // 4. Tusuviig tootsoolno.
+
+
         // 5. Etssiin uldegdel, tootsoog delgetsend gargana.
     };
    
