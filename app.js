@@ -82,7 +82,7 @@ var uiController = (function(){
 
             // Element bolgonii huvid zarlagiin huviig massive aas avj shivj oruulah
             nodeListForeach(elements, function(el, index){
-                el.textContent = allPercentages[index];
+                el.textContent = allPercentages[index]+"%";
             });
         },
 
