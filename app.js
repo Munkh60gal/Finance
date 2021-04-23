@@ -28,20 +28,21 @@ var uiController = (function(){
 
         too = "" + too;  //temdegt mur bolgoj bna
 
-        var x = too.split("").reverse().join("");
+         /*/splitiig ashiglan tsipriig 1 1eer n salgan massive bolgood reverse ashiglan araas n bairluulaad join ashiglan salgasnigaa butsaan niiluulj baina.*/
+        var x = too.split("").reverse().join("");  
         var y = '';
         var count = 1;
 
         for(var i=0; i < x.length; i++)
         {
             y = y + x[i];
-            if( count%3 === 0 ) y = y + ',';
+            if( count%3 === 0 ) y = y + ',';   // 3 ornoor n salgan , tavij bn
             count ++;
         }
 
         var z = y.split("").reverse().join("");
 
-        if(z[0] === ',') z = z.substr(1, z.length - 1);
+        if(z[0] === ',') z = z.substr(1, z.length - 1);  // ehnii index , bval tuuniig boliulj bna
 
 
         if(type === 'inc') z = "+ " + z;
@@ -54,6 +55,17 @@ var uiController = (function(){
         displayDate: function(){
             var unuudur = new Date();
             document.querySelector(DOMstrings.dateLabel).textContent = unuudur.getFullYear() +" оны " + (unuudur.getMonth() +1)+" сарын"
+        },
+
+        // + bval nogoon, - bval ulaan ungutei bolgono
+        changeType: function(){
+            var fields = document.querySelectorAll(DOMstrings.inputType + "," + DOMstrings.inputDescription + "," + DOMstrings.inputValue);
+
+            nodeListForeach(fields, function(el){
+                el.classList.toggle("red-focus");
+            });
+
+            document.querySelector(DOMstrings.addBtn).classList.toggle("red");
         },
 
         getInput : function(){
@@ -326,7 +338,7 @@ var appController = (function(uiController, financeController)
         // 1. Oruulah ugugdliig delgetsees olj avna.
         var input = uiController.getInput();
 
-        if(input.description !== "" && input.value !== "")   // Orlogo zarlagin mdelel hooson oruulj bologui bolgoj bna
+        if(input.description !== "" && input.value > 0)   // Orlogo zarlagin mdelel hooson oruulj bologui bolgoj bna
         {
             // 2. Olj avsan ugugdluudee sanhuugiin controllert damjuulj tend hadgalna. 
             var item = financeController.addItem(input.type, input.description, input.value);
@@ -377,6 +389,8 @@ var appController = (function(uiController, financeController)
                 ctrlAddItem();
             }
         });
+
+        document.querySelector(DOM.inputType).addEventListener("change", uiController.changeType);
 
         document.querySelector(DOM.containerDiv).addEventListener("click", function(event){
             var id = event.target.parentNode.parentNode.parentNode.parentNode.id; // target ni event bolohod daragdaj bui element
